@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProbuildApplication {
-
+public class ProbuildApiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProbuildApplication.class, args);
+        SpringApplication.run(ProbuildApiApplication.class, args);
     }
 
 }

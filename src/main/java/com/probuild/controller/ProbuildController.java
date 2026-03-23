@@ -15,6 +15,7 @@ public class ProbuildController {
     @PostMapping("/add")
     public String addTool(@RequestParam String name,
                           @RequestParam String category) {
+        System.out.println("Add tool endpoint hit");
         Tool tool = new Tool();
         tool.setName(name);
         tool.setCategory(category);
@@ -26,18 +27,21 @@ public class ProbuildController {
     // List all tools
     @GetMapping("/list")
     public Iterable<Tool> listTools() {
+        System.out.println("List tool endpoint hit");
         return toolRepository.findAll();
     }
 
     // Find by ID — maps to "Query tool availability in system"
     @GetMapping("/find/{id}")
     public Tool findToolById(@PathVariable Integer id) {
+        System.out.println("Find tool endpoint hit");
         return toolRepository.findToolById(id);
     }
 
     // List only available tools — feeds the "Is tool available?" gateway
     @GetMapping("/available")
     public Iterable<Tool> availableTools() {
+        System.out.println("Available tools endpoint hit");
         return toolRepository.findByAvailableTrue();
     }
 
@@ -45,6 +49,7 @@ public class ProbuildController {
     @PostMapping("/update/{id}")
     public String updateAvailability(@PathVariable Integer id,
                                      @RequestParam boolean available) {
+        System.out.println("Update tool endpoint hit with id:" + id);
         Tool tool = toolRepository.findById(id).orElseThrow();
         tool.setAvailable(available);
         toolRepository.save(tool);
