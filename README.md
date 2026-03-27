@@ -1,7 +1,7 @@
 ## Setup & Usage Instructions
 
 1. Start your local camunda instance by running `camunda-start.bat` in the camunda8 getting started bundle (not found in this repo)
-2. Start the API by running `ProBuildApiApplication`, start the service worker by running `ProBuildWorkerApplication`.
+2. Start the API (this repo) by running `ProBuildApiApplication`, start the service worker (in the worker repo) by running `ProBuildWorkerApplication`.
 3. The database should already be populated. You can view the contents of it by going to: http://localhost:8081/h2-console. Login with
 ```
 JDBC URL: jdbc:h2:file:./data/probuilddb;AUTO_SERVER=TRUE
