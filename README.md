@@ -26,7 +26,6 @@ If you wish to populate the table manually, you can hit the endpoint using postm
 
 ```
 POST http://localhost:8081/add?name=Drill&category=Power Tools
-GET http://localhost:8081/list
-GET http://localhost:8081/available
-POST http://localhost:8081/update/2?available=true
+GET http://localhost:8081/tools
+GET http://localhost:8081/tools/available
 ```
