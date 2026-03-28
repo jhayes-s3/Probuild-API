@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")  // Prefix all endpoints with /api
 public class ProbuildController {
 
     @Autowired
