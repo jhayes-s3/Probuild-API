@@ -35,6 +35,9 @@ public class ProbuildController {
     @Autowired
     private TradeCardRepository tradeCardRepository;
 
+    @Autowired
+    private com.probuild.scheduled.TradeCardAnnualResetService tradeCardAnnualResetService;
+
     // ========================
     // Tool Endpoints
     // ========================
@@ -153,6 +156,13 @@ public class ProbuildController {
         int existing = card.getPointsBalance() == null ? 0 : card.getPointsBalance();
         card.setPointsBalance(existing + pointsToAdd);
         return tradeCardRepository.save(card);
+    }
+
+    @PostMapping("/tradecards/reset")
+    public java.util.Map<String, Integer> resetAllTradeCards() {
+        System.out.println("manual trade card reset endpoint hit");
+        int count = tradeCardAnnualResetService.resetAll();
+        return java.util.Map.of("resetCount", count);
     }
 
     @GetMapping("/customers")
