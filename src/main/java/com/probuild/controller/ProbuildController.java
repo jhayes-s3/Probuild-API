@@ -32,6 +32,9 @@ public class ProbuildController {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private TradeCardRepository tradeCardRepository;
+
     // ========================
     // Tool Endpoints
     // ========================
@@ -106,6 +109,50 @@ public class ProbuildController {
         if (cardExpiry != null) c.setCardExpiry(cardExpiry);
         if (cardCvc != null) c.setCardCvc(cardCvc);
         return customerRepository.save(c);
+    }
+
+    // ========================
+    // TradeCard Endpoints
+    // ========================
+
+    @GetMapping("/tradecards")
+    public Iterable<TradeCard> listTradeCards() {
+        System.out.println("list trade cards endpoint hit");
+        return tradeCardRepository.findAll();
+    }
+
+    @GetMapping("/tradecards/customer/{customerId}")
+    public Iterable<TradeCard> tradeCardsByCustomer(@PathVariable Integer customerId) {
+        System.out.println("trade cards by customer endpoint hit");
+        return tradeCardRepository.findByCustomerId(customerId);
+    }
+
+    @GetMapping("/tradecards/number/{cardNumber}")
+    public Optional<TradeCard> tradeCardByNumber(@PathVariable String cardNumber) {
+        System.out.println("trade card by number endpoint hit");
+        return tradeCardRepository.findByCardNumber(cardNumber);
+    }
+
+    @PostMapping("/tradecards")
+    public TradeCard addTradeCard(@RequestParam String cardNumber,
+                                  @RequestParam Integer customerId) {
+        System.out.println("add trade card endpoint hit");
+        TradeCard card = new TradeCard();
+        card.setCardNumber(cardNumber);
+        card.setIssueDate(LocalDate.now());
+        card.setPointsBalance(0);
+        customerRepository.findById(customerId).ifPresent(card::setCustomer);
+        return tradeCardRepository.save(card);
+    }
+
+    @PostMapping("/tradecards/{id}/points")
+    public TradeCard addPointsToTradeCard(@PathVariable Integer id,
+                                          @RequestParam Integer pointsToAdd) {
+        System.out.println("add points to trade card endpoint hit");
+        TradeCard card = tradeCardRepository.findById(id).orElseThrow();
+        int existing = card.getPointsBalance() == null ? 0 : card.getPointsBalance();
+        card.setPointsBalance(existing + pointsToAdd);
+        return tradeCardRepository.save(card);
     }
 
     @GetMapping("/customers")
@@ -230,12 +277,16 @@ public class ProbuildController {
     public PurchaseOrder updatePurchaseOrder(@PathVariable Integer id,
                                              @RequestParam(required = false) String supplierName,
                                              @RequestParam(required = false) String deliveryManifest,
-                                             @RequestParam(required = false) String deliveryAddress) {
+                                             @RequestParam(required = false) String deliveryAddress,
+                                             @RequestParam(required = false) Integer tradeCardId) {
         System.out.println("update purchase order endpoint hit");
         PurchaseOrder po = purchaseOrderRepository.findById(id).orElseThrow();
         if (supplierName != null) po.setSupplierName(supplierName);
         if (deliveryManifest != null) po.setDeliveryManifest(deliveryManifest);
         if (deliveryAddress != null) po.setDeliveryAddress(deliveryAddress);
+        if (tradeCardId != null) {
+            tradeCardRepository.findById(tradeCardId).ifPresent(po::setTradeCard);
+        }
         return purchaseOrderRepository.save(po);
     }
 

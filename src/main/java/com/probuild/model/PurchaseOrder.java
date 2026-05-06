@@ -19,6 +19,9 @@ public class PurchaseOrder {
     @ManyToOne
     private Customer customer;
 
+    @ManyToOne
+    private TradeCard tradeCard;
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -39,4 +42,7 @@ public class PurchaseOrder {
 
     public String getDeliveryManifest() { return deliveryManifest; }
     public void setDeliveryManifest(String deliveryManifest) { this.deliveryManifest = deliveryManifest; }
+
+    public TradeCard getTradeCard() { return tradeCard; }
+    public void setTradeCard(TradeCard tradeCard) { this.tradeCard = tradeCard; }
 }
