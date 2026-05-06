@@ -14,12 +14,22 @@ public class PurchaseOrder {
     private LocalDate orderDate;
     private LocalDate expectedDeliveryDate;
     private String deliveryManifest;
+    private String deliveryAddress;
+
+    @ManyToOne
+    private Customer customer;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
     public String getSupplierName() { return supplierName; }
     public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
+
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
+
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 
     public LocalDate getOrderDate() { return orderDate; }
     public void setOrderDate(LocalDate orderDate) { this.orderDate = orderDate; }
