@@ -5,6 +5,7 @@ import com.probuild.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -88,6 +89,25 @@ public class ProbuildController {
         return customerRepository.save(customer);
     }
 
+    @PutMapping("/customers/{id}")
+    public Customer updateCustomer(@PathVariable Integer id,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String email,
+                                   @RequestParam(required = false) String membershipLevel,
+                                   @RequestParam(required = false) String cardNumber,
+                                   @RequestParam(required = false) String cardExpiry,
+                                   @RequestParam(required = false) String cardCvc) {
+        System.out.println("update customer endpoint hit");
+        Customer c = customerRepository.findById(id).orElseThrow();
+        if (name != null) c.setName(name);
+        if (email != null) c.setEmail(email);
+        if (membershipLevel != null) c.setMembershipLevel(membershipLevel);
+        if (cardNumber != null) c.setCardNumber(cardNumber);
+        if (cardExpiry != null) c.setCardExpiry(cardExpiry);
+        if (cardCvc != null) c.setCardCvc(cardCvc);
+        return customerRepository.save(c);
+    }
+
     @GetMapping("/customers")
     public Iterable<Customer> listCustomers() {
         System.out.println("list customers endpoint hit");
@@ -144,6 +164,18 @@ public class ProbuildController {
         return stockRecordRepository.findByToolId(toolId);
     }
 
+    @PostMapping("/stock")
+    public StockRecord addStockRecord(@RequestParam Integer toolId,
+                                      @RequestParam Integer quantity,
+                                      @RequestParam(required = false) String binLocation) {
+        System.out.println("add stock record endpoint hit");
+        StockRecord record = new StockRecord();
+        toolRepository.findById(toolId).ifPresent(record::setTool);
+        record.setQuantity(quantity);
+        record.setBinLocation(binLocation);
+        return stockRecordRepository.save(record);
+    }
+
     // ========================
     // ServiceJob Endpoints
     // ========================
@@ -176,6 +208,37 @@ public class ProbuildController {
         return purchaseOrderRepository.findBySupplierName(supplierName);
     }
 
+    @PostMapping("/purchaseorders")
+    public PurchaseOrder addPurchaseOrder(@RequestParam String supplierName,
+                                          @RequestParam(required = false) String deliveryManifest,
+                                          @RequestParam(required = false) String deliveryAddress,
+                                          @RequestParam(required = false) Integer customerId) {
+        System.out.println("add purchase order endpoint hit");
+        PurchaseOrder po = new PurchaseOrder();
+        po.setSupplierName(supplierName);
+        po.setOrderDate(LocalDate.now());
+        po.setExpectedDeliveryDate(LocalDate.now().plusDays(7));
+        po.setDeliveryManifest(deliveryManifest);
+        po.setDeliveryAddress(deliveryAddress);
+        if (customerId != null) {
+            customerRepository.findById(customerId).ifPresent(po::setCustomer);
+        }
+        return purchaseOrderRepository.save(po);
+    }
+
+    @PutMapping("/purchaseorders/{id}")
+    public PurchaseOrder updatePurchaseOrder(@PathVariable Integer id,
+                                             @RequestParam(required = false) String supplierName,
+                                             @RequestParam(required = false) String deliveryManifest,
+                                             @RequestParam(required = false) String deliveryAddress) {
+        System.out.println("update purchase order endpoint hit");
+        PurchaseOrder po = purchaseOrderRepository.findById(id).orElseThrow();
+        if (supplierName != null) po.setSupplierName(supplierName);
+        if (deliveryManifest != null) po.setDeliveryManifest(deliveryManifest);
+        if (deliveryAddress != null) po.setDeliveryAddress(deliveryAddress);
+        return purchaseOrderRepository.save(po);
+    }
+
     // ========================
     // Invoice Endpoints
     // ========================
@@ -190,5 +253,38 @@ public class ProbuildController {
     public Iterable<Invoice> invoicesByCustomer(@PathVariable Integer customerId) {
         System.out.println("invoices by customer endpoint hit");
         return invoiceRepository.findByCustomerId(customerId);
+    }
+
+    @PostMapping("/invoices")
+    public Invoice addInvoice(@RequestParam String invoiceNumber,
+                              @RequestParam Double amount,
+                              @RequestParam(required = false) Integer customerId) {
+        System.out.println("add invoice endpoint hit");
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceNumber(invoiceNumber);
+        invoice.setInvoiceDate(LocalDate.now());
+        invoice.setAmount(amount);
+        if (customerId != null) {
+            customerRepository.findById(customerId).ifPresent(invoice::setCustomer);
+        }
+        return invoiceRepository.save(invoice);
+    }
+
+    // ========================
+    // ServiceJob extra endpoints
+    // ========================
+
+    @PostMapping("/servicejobs")
+    public ServiceJob addServiceJob(@RequestParam String description,
+                                    @RequestParam(required = false) Integer toolId) {
+        System.out.println("add service job endpoint hit");
+        ServiceJob job = new ServiceJob();
+        job.setDescription(description);
+        job.setServiceDate(LocalDate.now());
+        job.setServiceLog("Created by BPMN worker");
+        if (toolId != null) {
+            toolRepository.findById(toolId).ifPresent(job::setTool);
+        }
+        return serviceJobRepository.save(job);
     }
 }
