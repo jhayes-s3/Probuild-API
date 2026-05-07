@@ -1,7 +1,7 @@
 ## Setup & Usage Instructions
 
 1. Start your local camunda instance by running `camunda-start.bat` in the camunda8 getting started bundle (not found in this repo)
-2. Start the API (this repo) by running `ProBuildApiApplication`, start the service worker (in the worker repo) by running `ProBuildWorkerApplication`.
+2. Start the API (this repo) by running ```ProBuildApiApplication```, start the service worker (in the worker repo) by running ```ProBuildWorkerApplication```.
 3. The database should already be populated. You can view the contents of it by going to: http://localhost:8081/h2-console. Login with
 ```
 JDBC URL: jdbc:h2:file:./data/probuilddb;AUTO_SERVER=TRUE
@@ -15,11 +15,12 @@ You'll land on a SQL workbench. In the left panel you'll see your TOOL table —
 ```sql
 SELECT * FROM tool;
 ```
-4. 
+4. seed the database via "curl -X POST http://localhost:8081/seed" this fills it with dummy data that can be used down the line
 5. Launch the local Camunda Modeler (again from getting started bundle)
 6. Deploy the diagram and forms (go to the disp diagrams folder and in command prompt run ```python deploy.py```)
 7. to start an instance from create purchase order run ```python start.py``` from Disp diagrams
 8. Observe from http://localhost:8080/operate/login (user+password is demo), check api console for logging of which endpoints were hit, refresh database to see changes made.
+9. when encountering a user task make sure to go to http://localhost:8080/tasklist to fill in the forms, be aware you will have to press, `Assign to Me` before you can fill them in.
 
 ## Manual Table Population
 
