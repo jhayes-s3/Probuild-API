@@ -22,6 +22,8 @@ SELECT * FROM tool;
 8. Observe from http://localhost:8080/operate/login (user+password is demo), check api console for logging of which endpoints were hit, refresh database to see changes made.
 9. when encountering a user task make sure to go to http://localhost:8080/tasklist to fill in the forms, be aware you will have to press, `Assign to Me` before you can fill them in.
 
+**[NOTE] when running the camunda file you may notice when going to a throw event that crossess into another pool e.g FixPro you will have to switch processess to see what happened at said pool and may need to resolve some forms before flows can continue**
+
 ## Manual Table Population
 
 If you wish to populate the table manually, you can hit the endpoint using postman, eg:
