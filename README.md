@@ -15,7 +15,7 @@ You'll land on a SQL workbench. In the left panel you'll see your TOOL table —
 ```sql
 SELECT * FROM tool;
 ```
-4. seed the database via "curl -X POST http://localhost:8081/seed" this fills it with dummy data that can be used down the line
+4. seed the database via "curl.exe -X POST http://localhost:8081/seed" this fills it with dummy data that can be used down the line
 5. Launch the local Camunda Modeler (again from getting started bundle)
 6. Deploy the diagram and forms (go to the disp diagrams folder and in command prompt run ```python deploy.py```)
 7. to start an instance from create purchase order run ```python start.py``` from Disp diagrams
