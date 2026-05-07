@@ -15,10 +15,11 @@ You'll land on a SQL workbench. In the left panel you'll see your TOOL table —
 ```sql
 SELECT * FROM tool;
 ```
-
-4. Launch the local Camunda Modeler (again from getting started bundle)
-5. Deploy the diagram and forms (need to individually open and deploy them) with the rocket ship icon (can use my example from the diagrams repo), then run with the play icon
-6. Observe from http://localhost:8080/operate/login (user+password is demo), check api console for logging of which endpoints were hit, refresh database to see changes made.
+4. 
+5. Launch the local Camunda Modeler (again from getting started bundle)
+6. Deploy the diagram and forms (go to the disp diagrams folder and in command prompt run ```python deploy.py```)
+7. to start an instance from create purchase order run ```python start.py``` from Disp diagrams
+8. Observe from http://localhost:8080/operate/login (user+password is demo), check api console for logging of which endpoints were hit, refresh database to see changes made.
 
 ## Manual Table Population
 
